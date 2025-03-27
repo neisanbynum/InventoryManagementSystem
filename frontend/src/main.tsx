@@ -1,0 +1,29 @@
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import { BrowserRouter, Route, Routes } from 'react-router'
+import { Provider } from 'react-redux'
+import store from './state/main'
+import UnprotectedLayout from './layouts/unprotected'
+import { StrictMode } from 'react'
+import AuthPageLayout from './pages/auth/layout'
+import AuthenticationForm from './pages/auth/components/auth-panel.auth-form'
+import Paths from './pages/route-names'
+
+createRoot(document.getElementById('root')!).render(
+	<StrictMode>
+		<Provider store={store}>
+			<BrowserRouter>
+				<Routes>
+					<Route element={<UnprotectedLayout />}>
+						<Route path={Paths.home} element={<div>Home</div>} />
+						<Route path={Paths.auth} element={<AuthPageLayout/>} >
+							<Route index element={<AuthenticationForm/>} />
+							<Route path={Paths.register} element={<div>Register</div>} />
+						</Route>
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</Provider>
+	</StrictMode>
+	
+)
