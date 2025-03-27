@@ -1,6 +1,6 @@
-import { CSSProperties, HTMLInputTypeAttribute, ReactNode } from 'react'
+import { CSSProperties, HTMLInputTypeAttribute, ReactNode, useState } from 'react'
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { useFormContext } from 'react-hook-form'
+import { FieldValues, useFormContext, UseFormReturn } from 'react-hook-form'
 import { Input } from '../ui/input'
 
 interface InputProps {
@@ -17,10 +17,31 @@ interface InputProps {
 	required?: HTMLInputElement['required']
 	disabled?: HTMLInputElement['disabled']
 	type?: HTMLInputTypeAttribute
+    passwordHint?: boolean
 }
 
 export function FormInput({ ...props }: InputProps): ReactNode {
-	const form = useFormContext()
+    const password: boolean = props.type === 'password'
+    const passwordHint: boolean = props.passwordHint === undefined && password ? true : Boolean(props.passwordHint)
+	const showHint: boolean = password && passwordHint
+    const [type, setType] = useState<typeof props.type>(props.type)
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const form: UseFormReturn<FieldValues, any, undefined> = useFormContext()
+
+    function handleDoubleClick(e: React.MouseEvent<HTMLInputElement>): void {
+        e.preventDefault()
+        if (password) {
+            setType(type === 'password' ? 'text' : 'password')
+            moveCaret(e.currentTarget)
+        }
+    }
+
+    function moveCaret(target: HTMLInputElement): void {
+        const length = target.value.length
+        requestAnimationFrame(() => {
+            target.setSelectionRange(length, length)
+        })
+    }
 
 	return (
 		<FormField
@@ -41,13 +62,15 @@ export function FormInput({ ...props }: InputProps): ReactNode {
 						{props.label && <FormLabel>{props.label}</FormLabel>}
 						<FormControl>
 							<Input
-								type={props.type}
+								type={type}
+                                onDoubleClick={handleDoubleClick}
 								disabled={props.disabled}
-								required={props.required || true}
-								placeholder={props.placeholder}
+								required={props.required ? props.required : true}
+								placeholder={password ? 'Double-Click to Toggle Visibility' : props.placeholder}
 								{...field}
 							/>
 						</FormControl>
+                        {showHint && field.value && <p style={{fontSize: '0.6rem'}}>Double-Click to Toggle Visibility</p>}
 						{props.desc && <FormDescription>{props.desc}</FormDescription>}
 						<FormMessage />
 					</FormItem>
@@ -57,26 +80,5 @@ export function FormInput({ ...props }: InputProps): ReactNode {
 	)
 }
 
-interface LinkProps {
-    label: string
-    onClick: () => void
-    fontSize?: CSSProperties['fontSize']
-    weight?: CSSProperties['fontWeight']
-}
 
-export function LinkButton({...props}: LinkProps): ReactNode {
-    return (
-        <p
-            onClick={props.onClick}
-            style={{
-                fontSize: props.fontSize,
-                fontWeight: props.weight || 500,
-                cursor: 'pointer',
-            }}
-            className={'hover:underline'}
-        >
-            {props.label}
-        </p>
-    )
-}
 

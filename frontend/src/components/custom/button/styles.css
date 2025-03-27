@@ -63,3 +63,12 @@
 .ghost:focus {
   box-shadow: none;
 }
+
+.link-button {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
