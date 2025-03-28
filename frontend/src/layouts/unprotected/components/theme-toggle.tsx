@@ -1,18 +1,15 @@
 import { Button } from '@/components/ui/button'
-import { CSSProperties, ReactNode, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Sun, Moon } from 'lucide-react'
-import { setTheme, Theme, THEME_KEY } from '@/state/slices/theme-provider'
+import { setTheme, Theme, THEME_KEY } from '@/state/slices/app'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { titlecase } from '@/utils/helpers/parsers'
 import { RootState } from '@/state/main'
 
-interface ThemeToggleProps {
-	iconSize: CSSProperties['height']
-}
 
-export default function ThemeToggle({ iconSize }: ThemeToggleProps): ReactNode {
-	const { currTheme } = useSelector((state: RootState) => state.theme)
+export default function ThemeToggle(): React.ReactNode {
+	const { currTheme } = useSelector((state: RootState) => state.app)
 	const dispatch = useDispatch()
 
 	// Initialize Theme
@@ -49,10 +46,10 @@ export default function ThemeToggle({ iconSize }: ThemeToggleProps): ReactNode {
 						style={{outline: 0, border: 0}}
 					>
 						<Sun
-							className={`w-[${iconSize}] h-[${iconSize}] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0`}
+							className={`rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0`}
 						/>
 						<Moon
-							className={`absolute w-[${iconSize}] h-[${iconSize}] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100`}
+							className={`absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100`}
 						/>
                         <span className="sr-only">Toggle Theme</span>
 					</Button>

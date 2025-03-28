@@ -1,12 +1,16 @@
-import { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { HStack, VStack } from '@/components/custom/container'
 import { FormInput } from '@/components/custom/inputs'
 import { useNavigate } from 'react-router'
 import Paths from '@/pages/route-names'
-import { Clickable, TextLink } from '@/components/custom/clickable'
+import server from '@/utils/server'
+import { toast } from 'sonner'
+import { AxiosError } from 'axios'
+import { useDispatch } from 'react-redux'
+import { authenticate } from '@/state/slices/app'
+import Clickable from '@/components/custom/clickable'
+import Link from '@/components/custom/link'
 
 const authForm = z.object({
 	userID: z
@@ -17,7 +21,10 @@ const authForm = z.object({
 
 type AuthForm = z.infer<typeof authForm>
 
-export default function AuthenticationForm(): ReactNode {
+export default function AuthenticationForm(): React.ReactNode {
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
+
 	const form = useForm<AuthForm>({
 		resolver: zodResolver(authForm),
 		defaultValues: {
@@ -28,32 +35,48 @@ export default function AuthenticationForm(): ReactNode {
 		reValidateMode: 'onBlur'
 	})
 
-	function onSubmit(data: AuthForm) {
-		console.log(data)
+	async function onSubmit(entries: AuthForm) {
+		try {
+			const { data } = await server.post('/auth', entries)
+			console.log(data)
+			dispatch(authenticate(data))
+			toast.success('Authenticated!', {
+				description: 'Welcome to Inventory Management System'
+			})
+			navigate(Paths.registerVerification)
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data.detail)
+				toast.error('Authentication Error', {
+					description: error.response?.data.detail || 'Failed to access account.'
+				})
+			}
+		}
 	}
 
 	return (
 		<FormProvider {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				style={{ width: '100%' }}
+				className='w-full'
 			>
-				<VStack className='gap-8'>
+				<div className='vstack gap-8'>
 					<AuthenticationInputs />
 					<Clickable
 						type='submit'
 						label='Authenticate'
 						className='w-60'
 					/>
-				</VStack>
+				</div>
 			</form>
 		</FormProvider>
 	)
 }
 
-function AuthenticationInputs(): ReactNode {
+function AuthenticationInputs(): React.ReactNode {
 	return (
-		<VStack className='gap-2'>
+		<div className='hstack gap-2'>
 			<FormInput
 				name={'userID'}
 				label={'Employee ID'}
@@ -65,21 +88,21 @@ function AuthenticationInputs(): ReactNode {
 				type={'password'}
 			/>
 			<PasswordRecovery />
-		</VStack>
+		</div>
 	)
 }
 
-function PasswordRecovery(): ReactNode {
+function PasswordRecovery(): React.ReactNode {
 	const navigate = useNavigate()
 
 	return (
-		<HStack className='gap-1 justify-start'>
-			<p style={{ fontSize: '0.75rem' }}>Forgot your password?</p>
-			<TextLink
+		<div className='hstack gap-1 justify-start'>
+			<p className='text-xs'>Forgot your password?</p>
+			<Link
 				label={'Reset Password'}
 				onClick={() => navigate(Paths.register)}
-				size={'0.75rem'}
+				className='text-xs'
 			/>
-		</HStack>
+		</div>
 	)
 }

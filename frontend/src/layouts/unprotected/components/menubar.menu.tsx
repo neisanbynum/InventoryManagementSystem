@@ -8,12 +8,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { ReactNode, useState } from 'react'
-import { MENUBAR } from '../constants'
+import { useState } from 'react'
 import { Menu, SquareMenu } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import Paths from '@/pages/route-names'
 
-export default function MenubarMenu(): ReactNode {
+export default function MenubarMenu(): React.ReactNode {
 	const [opened, setOpened] = useState(false)
 
 	return (
@@ -28,9 +28,7 @@ interface TriggerProps {
 	opened: boolean
 }
 
-function MenuTrigger({ opened }: TriggerProps): ReactNode {
-	const iconSize: string = `calc(${MENUBAR.height} - ${MENUBAR.padding})`
-
+function MenuTrigger({ opened }: TriggerProps): React.ReactNode {
 	return (
 		<DropdownMenuTrigger
 			asChild
@@ -43,9 +41,9 @@ function MenuTrigger({ opened }: TriggerProps): ReactNode {
 				className='hover:bg-transparent'
 				style={{ outline: 0, border: 0 }}
 			>
-				<Menu className={`w-[${iconSize}] h-[${iconSize}] scale-${opened ? 0 : 100} transition-all`} />
+				<Menu className={`scale-${opened ? 0 : 100} transition-all`} />
 				<SquareMenu
-					className={`absolute w-[${iconSize}] h-[${iconSize}] scale-${opened ? 100 : 0} transition-all`}
+					className={`absolute scale-${opened ? 100 : 0} transition-all`}
 				/>
 			</Button>
 		</DropdownMenuTrigger>
@@ -71,11 +69,12 @@ type MenuDivider = { type: 'divider' }
 type MenuItem = MenuDivider | MenuLink | MenuGroup
 type MenuItems = MenuItem[]
 
-function MenuContent(): ReactNode {
+function MenuContent(): React.ReactNode {
 	const items: MenuItems = [
-		{ type: 'link', label: 'Sign In', link: '/auth' },
+		{ type: 'link', label: 'Authentication', link: Paths.auth },
 		{ type: 'divider' },
-		{ type: 'link', label: 'Register', link: '/auth/register' }
+		{ type: 'link', label: 'Registration', link: Paths.register },
+		{ type: 'link', label: 'Verification', link: Paths.registerVerification}
 	]
 
 	return (
@@ -96,7 +95,7 @@ interface ItemProps {
 	index: number
 }
 
-function RenderItem({ item, index }: ItemProps): ReactNode {
+function RenderItem({ item, index }: ItemProps): React.ReactNode {
 	switch (item.type) {
 		case 'divider':
 			return <DropdownMenuSeparator key={`Menu-Divider-${index}`} />
@@ -121,7 +120,7 @@ interface GroupProps {
 	group: MenuGroup
 }
 
-function RenderGroup({ group }: GroupProps): ReactNode {
+function RenderGroup({ group }: GroupProps): React.ReactNode {
 	// TODO: Check if user is logged in
 	const render: boolean = group.protected ? true : true
 	if (!render) return null
@@ -143,7 +142,7 @@ interface LinkProps {
 	item: MenuLink
 }
 
-function RenderLink({ item }: LinkProps): ReactNode {
+function RenderLink({ item }: LinkProps): React.ReactNode {
 	const navigate = useNavigate()
 	// TODO: Check if user is logged in
 	const render: boolean = item.protected ? true : true

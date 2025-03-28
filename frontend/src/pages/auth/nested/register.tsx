@@ -1,11 +1,13 @@
-import { Clickable } from '@/components/custom/button'
-import { HStack, VStack } from '@/components/custom/container'
+import Clickable from '@/components/custom/clickable'
 import { FormInput } from '@/components/custom/inputs'
 import Paths from '@/pages/route-names'
+import server from '@/utils/server'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { AxiosError } from 'axios'
 import { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const registerUserForm = z.object({
@@ -45,9 +47,24 @@ export default function RegistrationForm(): ReactNode {
 		reValidateMode: 'onBlur'
 	})
 
-	function onSubmit(data: RegisterUserForm) {
+	async function onSubmit(data: RegisterUserForm) {
 		console.log(data)
-		navigate(Paths.registerVerification)
+		try {
+			const res = await server.put('/auth', data)
+			console.log(res)
+			toast('Account Created!', {
+				description: 'Your account has successfully been created. Await verification from a team admin.'
+			})
+			navigate(Paths.auth)
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data.detail)
+				toast.error('Registration Error', {
+					description: error.response?.data.detail || 'Failed to create your account'
+				})
+			}
+		}
 	}
 
 	return (
@@ -56,14 +73,14 @@ export default function RegistrationForm(): ReactNode {
 				onSubmit={form.handleSubmit(onSubmit)}
 				style={{ width: '100%' }}
 			>
-				<VStack className='gap-8'>
+				<div className='vstack gap-8'>
 					<RegisterInputs />
 					<Clickable
 						type='submit'
 						label='Register'
-						width='15rem'
+						className='w-60'
 					/>
-				</VStack>
+				</div>
 			</form>
 		</FormProvider>
 	)
@@ -71,17 +88,17 @@ export default function RegistrationForm(): ReactNode {
 
 function RegisterInputs(): ReactNode {
 	return (
-		<VStack className='gap-8'>
+		<div className='vstack gap-8'>
             <CompanyInformation/>
 			<PersonalInformation/>
             <Password/>
-		</VStack>
+		</div>
 	)
 }
 
 function CompanyInformation(): ReactNode {
 	return (
-		<HStack className='gap-2 items-start'>
+		<div className='form-hstack'>
 			<FormInput
 				name='userID'
 				label='Employee ID'
@@ -92,14 +109,14 @@ function CompanyInformation(): ReactNode {
 				label='Team ID'
 				type='number'
 			/>
-		</HStack>
+		</div>
 	)
 }
 
 function PersonalInformation(): ReactNode {
 	return (
-		<VStack className='gap-2'>
-			<HStack className='gap-2 items-start'>
+		<div className='vstack gap-2'>
+			<div className='form-hstack'>
 				<FormInput
 					name='last'
 					label='Last Name'
@@ -113,8 +130,8 @@ function PersonalInformation(): ReactNode {
 					label='Middle Name'
                     width='75%'
 				/>
-			</HStack>
-			<HStack className='gap-2 items-start'>
+			</div>
+			<div className='form-hstack'>
 				<FormInput
 					name='email'
 					label='Email Address'
@@ -126,14 +143,14 @@ function PersonalInformation(): ReactNode {
 					type='number'
 					width='75%'
 				/>
-			</HStack>
-		</VStack>
+			</div>
+		</div>
 	)
 }
 
 function Password(): ReactNode {
 	return (
-		<HStack className='gap-2 items-start'>
+		<div className='form-hstack'>
 			<FormInput
 				name='password'
 				label='Password'
@@ -145,6 +162,6 @@ function Password(): ReactNode {
 				type='password'
 				passwordHint={false}
 			/>
-		</HStack>
+		</div>
 	)
 }

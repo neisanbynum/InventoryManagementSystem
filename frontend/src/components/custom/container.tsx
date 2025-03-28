@@ -8,26 +8,24 @@ interface StackProps {
 	style?: CSSProperties
 }
 
-export function HStack({ ...props }: StackProps): ReactNode {
-	const style: ClassName = 'flex flex-row w-full h-fit justify-center items-center gap-4'
+export function HStack({ children, className, style }: StackProps): ReactNode {
 	return (
 		<div
-			className={cn(style, props.className)}
-			style={props.style}
+			className={cn('flex flex-row w-full h-fit justify-center items-center', className)}
+			style={style}
 		>
-			{props.children}
+			{children}
 		</div>
 	)
 }
 
-export function VStack({ ...props }: StackProps): ReactNode {
-	const style: ClassName = 'flex flex-col w-full h-full justify-center items-center gap-4'
+export function VStack({ children, className, style }: StackProps): ReactNode {
 	return (
 		<div
-			className={cn(style, props.className)}
-			style={props.style}
+			className={cn('flex flex-col w-full h-full justify-center items-center', className)}
+			style={style}
 		>
-			{props.children}
+			{children}
 		</div>
 	)
 }

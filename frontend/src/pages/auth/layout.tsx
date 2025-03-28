@@ -1,19 +1,17 @@
-import { TextLink } from "@/components/custom/clickable";
-import { HStack, VStack } from "@/components/custom/container";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { ReactNode } from "react";
 import { useLocation, Outlet, useNavigate } from "react-router";
 import Paths from "../route-names";
+import Link from "@/components/custom/link";
 
-export default function AuthenticationLayout(): ReactNode {
+export default function AuthenticationLayout(): React.ReactNode {
     return (
-        <VStack>
+        <div className="vstack">
             <AuthPanel/>
-        </VStack>
+        </div>
     )
 }
 
-function AuthPanel(): ReactNode {
+function AuthPanel(): React.ReactNode {
 	const { pathname } = useLocation()
 
 	return (
@@ -27,7 +25,7 @@ function AuthPanel(): ReactNode {
 	)
 }
 
-function AuthHeader(): ReactNode {
+function AuthHeader(): React.ReactNode {
 	const { pathname } = useLocation()
 
 	return (
@@ -41,20 +39,20 @@ function AuthHeader(): ReactNode {
 	)
 }
 
-function AuthFooter(): ReactNode {
+function AuthFooter(): React.ReactNode {
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
 
 	return (
 		<CardFooter>
-			<HStack className={'gap-1'}>
+			<div className="hstack gap-1">
 				{pathname === Paths.auth && <p>Need to create an account?</p>}
 				{pathname === Paths.register && <p>Already have an account?</p>}
-				<TextLink
+				<Link
 					label={pathname === Paths.auth ? 'Register Now' : 'Sign In'}
 					onClick={() => navigate(pathname === Paths.auth ? Paths.register : Paths.auth)}
 				/>
-			</HStack>
+			</div>
 		</CardFooter>
 	)
 }

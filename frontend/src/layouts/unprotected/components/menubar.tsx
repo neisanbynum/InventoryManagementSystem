@@ -1,42 +1,29 @@
-import { HStack } from "@/components/custom/containers";
-import { ReactNode } from "react";
 import ThemeToggle from "./theme-toggle";
-import { MENUBAR } from "../constants";
 import MenubarMenu from "./menubar.menu";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/main";
 
-
-export default function Menubar(): ReactNode {
+export default function Menubar(): React.ReactNode {
     return (
-        <HStack
-            width={'100vw'}
-            height={MENUBAR.height}
-            justify="space-between"
-            padding={MENUBAR.padding}
-            className="bg-slate-50 dark:bg-black"
-        >
+        <div className='hstack h-12 p-1 justify-between bg-slate-50 dark:bg-black'>
             <Label/>
             <Controls/>
-        </HStack>
+        </div>
     )
 }
 
-function Label(): ReactNode {
-    const authenticated: boolean = false
-
+function Label(): React.ReactNode {
+    const { authenticated, userName } = useSelector((state: RootState) => state.app)
     if (!authenticated) return <p>Inventory Management System</p>
 
-    return <p>Team - User</p>
+    return <p>{`${userName?.last}, ${userName?.first} ${userName?.middle}`.trim()}</p>
 }
 
-function Controls(): ReactNode {
+function Controls(): React.ReactNode {
     return (
-        <HStack 
-            width={'fit-content'}
-            justify="space-between"
-            gap={'0.25rem'}
-        >
+        <div className="hstack w-fit justify-between gap-1">
             <MenubarMenu/>
-            <ThemeToggle iconSize={`calc(${MENUBAR.height} - ${MENUBAR.padding})`}/>
-        </HStack>
+            <ThemeToggle/>
+        </div>
     )
 }
