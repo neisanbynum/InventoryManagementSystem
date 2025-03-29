@@ -4,8 +4,8 @@ import { cn } from '@sglara/cn'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 type Position = { top: number; left: number }
-type ParentProps = { children: React.ReactNode }
-type Placement =
+type ParentProps = { children?: React.ReactNode }
+export type Placement =
 	| 'top'
 	| 'top-start'
 	| 'top-end'

@@ -3,31 +3,35 @@ import '../index.css'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { Provider } from 'react-redux'
 import store from './state/main'
-import UnprotectedLayout from './layouts/unprotected'
+import AppLayout from './layouts/app-layout'
 import { StrictMode } from 'react'
-import AuthenticationLayout from './pages/auth/layout'
-import AuthenticationForm from './pages/auth'
-import Paths from './pages/route-names'
-import RegistrationForm from './pages/auth/nested/register'
-import RegistrationVerification from './pages/auth/nested/verification'
+import RegistrationVerification from './pages/verification'
 import { Toaster } from './components/ui/sonner'
+import pages from './pages/__pages.config'
+import AuthLayout from './layouts/auth-layout'
+import AuthenticationLayout from './layouts/authentication-layout'
+import SignInForm from './pages/sign-in'
+import RegisterForm from './pages/register'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<Provider store={store}>
 			<BrowserRouter>
 				<Routes>
-					<Route element={<UnprotectedLayout />}>
-						<Route path={Paths.home} element={<div>Home</div>} />
-						<Route path={Paths.auth} element={<AuthenticationLayout/>} >
-							<Route index element={<AuthenticationForm/>} />
-							<Route path={Paths.register} element={<RegistrationForm/>} />
+					<Route element={<AppLayout />}>
+						<Route path={pages.home} element={<div>Home</div>} />
+						<Route path={pages.authenication} element={<AuthenticationLayout />}>
+							<Route path={pages.signin} element={<SignInForm />} />
+							<Route path={pages.register} element={<RegisterForm />} />
 						</Route>
-						<Route path={Paths.registerVerification} element={<RegistrationVerification/>} />
+						<Route path={pages.verification} element={<RegistrationVerification />} />
+						<Route path={pages.authenticated} element={<AuthLayout />}>
+							<Route path={pages.authTest} element={<div>Testing Auth Home</div>} />
+						</Route>
 					</Route>
 				</Routes>
 			</BrowserRouter>
 		</Provider>
-		<Toaster position='top-right' richColors/>
+		<Toaster position='top-right' richColors />
 	</StrictMode>
 )

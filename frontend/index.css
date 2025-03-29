@@ -160,23 +160,29 @@
 
 @layer components {
 	/* Stack Containers */
-	.hstack, .vstack {
-		@apply flex w-full justify-center items-center;
+	.hstack, .vstack, .form-row, .form-group, .form-content {
+		@apply flex w-full justify-center;
 		background-color: var(--transparent);
 	}
-	.hstack, .form-row {
-		@apply flex-row h-fit;
+	.hstack, .vstack, .form-content {
+		@apply items-center;
+	}
+	.vstack, .form-content, .form-group {
+		@apply h-full flex-col;
+	}
+	.form-group, .form-row {
+		@apply gap-2;
 	}
 	.form-row {
-		@apply  gap-2 items-start;
+		@apply h-fit items-start;
 	}
-	.vstack {
-		@apply flex-col h-full;
+	.form-content {
+		@apply gap-8;
 	}
 
 	/* Clickables */
 	.icon-clickable {
-		@apply flex size-8 p-2 cursor-pointer disabled:cursor-default touch-manipulation select-none disabled:opacity-50;
+		@apply flex size-8 outline-none p-2 cursor-pointer disabled:cursor-default touch-manipulation select-none disabled:opacity-50;
 		background-color: var(--transparent);
 	}
 	.default-clickable,
@@ -221,7 +227,7 @@
 
 	/* ToolTip */
 	.tooltip-content {
-		@apply max-w-fit max-h-fit p-2 shadow-xl text-xs rounded-sm transition-transform duration-800 ease-out scale-95 opacity-0 pointer-events-none;
+		@apply max-w-fit max-h-fit p-2 shadow-xl text-xs rounded-sm transition-transform duration-1000 ease-out scale-95 opacity-0 pointer-events-none;
 		background-color: var(--primary);
 		color: var(--primary-foreground);
 	}
