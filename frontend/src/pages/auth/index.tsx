@@ -76,7 +76,7 @@ export default function AuthenticationForm(): React.ReactNode {
 
 function AuthenticationInputs(): React.ReactNode {
 	return (
-		<div className='hstack gap-2'>
+		<div className='vstack gap-2'>
 			<FormInput
 				name={'userID'}
 				label={'Employee ID'}

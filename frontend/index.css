@@ -162,12 +162,12 @@
 	/* Stack Containers */
 	.hstack, .vstack {
 		@apply flex w-full justify-center items-center;
-		background-color: var(--background);
+		background-color: var(--transparent);
 	}
-	.hstack, .form-hstack {
+	.hstack, .form-row {
 		@apply flex-row h-fit;
 	}
-	.form-hstack {
+	.form-row {
 		@apply  gap-2 items-start;
 	}
 	.vstack {
@@ -175,6 +175,10 @@
 	}
 
 	/* Clickables */
+	.icon-clickable {
+		@apply flex size-8 p-2 cursor-pointer disabled:cursor-default touch-manipulation select-none disabled:opacity-50;
+		background-color: var(--transparent);
+	}
 	.default-clickable,
 	.destructive-clickable,
 	.outline-clickable,
@@ -206,9 +210,23 @@
 		background-color: var(--secondary);
 		color: var(--secondary-foreground);
 	}
+	.ghost-clickable {
+		background-color: var(--transparent);
+	}
 
 	/* Links */
 	.link {
 		@apply font-medium cursor-pointer hover:underline hover:decoration-2;
+	}
+
+	/* ToolTip */
+	.tooltip-content {
+		@apply max-w-fit max-h-fit p-2 shadow-xl text-xs rounded-sm transition-transform duration-800 ease-out scale-95 opacity-0 pointer-events-none;
+		background-color: var(--primary);
+		color: var(--primary-foreground);
+	}
+	
+	.tooltip-visible {
+		@apply opacity-100 scale-100 pointer-events-auto;
 	}
 }

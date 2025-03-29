@@ -98,7 +98,7 @@ function RegisterInputs(): ReactNode {
 
 function CompanyInformation(): ReactNode {
 	return (
-		<div className='form-hstack'>
+		<div className='form-row'>
 			<FormInput
 				name='userID'
 				label='Employee ID'
@@ -116,7 +116,7 @@ function CompanyInformation(): ReactNode {
 function PersonalInformation(): ReactNode {
 	return (
 		<div className='vstack gap-2'>
-			<div className='form-hstack'>
+			<div className='form-row'>
 				<FormInput
 					name='last'
 					label='Last Name'
@@ -131,7 +131,7 @@ function PersonalInformation(): ReactNode {
                     width='75%'
 				/>
 			</div>
-			<div className='form-hstack'>
+			<div className='form-row'>
 				<FormInput
 					name='email'
 					label='Email Address'
@@ -150,7 +150,7 @@ function PersonalInformation(): ReactNode {
 
 function Password(): ReactNode {
 	return (
-		<div className='form-hstack'>
+		<div className='form-row'>
 			<FormInput
 				name='password'
 				label='Password'

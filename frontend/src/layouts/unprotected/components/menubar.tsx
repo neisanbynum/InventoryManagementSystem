@@ -5,7 +5,7 @@ import { RootState } from "@/state/main";
 
 export default function Menubar(): React.ReactNode {
     return (
-        <div className='hstack h-12 p-1 justify-between bg-slate-50 dark:bg-black'>
+        <div className='hstack h-12 p-2 justify-between bg-slate-50 dark:bg-black'>
             <Label/>
             <Controls/>
         </div>
@@ -21,7 +21,7 @@ function Label(): React.ReactNode {
 
 function Controls(): React.ReactNode {
     return (
-        <div className="hstack w-fit justify-between gap-1">
+        <div className="hstack w-fit justify-between gap-2">
             <MenubarMenu/>
             <ThemeToggle/>
         </div>
