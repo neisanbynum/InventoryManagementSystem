@@ -1,5 +1,5 @@
 import Spinner from '@/components/custom/spinner'
-import pages from '@/pages/__pages.config'
+import pages from '@/pages/pages.config'
 import { RootState } from '@/state/main'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'

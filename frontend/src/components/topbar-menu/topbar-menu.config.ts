@@ -1,4 +1,4 @@
-import pages from "@/pages/__pages.config";
+import pages from "@/pages/pages.config";
 import { MenuContent } from "./topbar-menu.types";
 
 const menuContent: MenuContent = [

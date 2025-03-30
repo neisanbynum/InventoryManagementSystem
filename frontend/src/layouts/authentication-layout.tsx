@@ -1,6 +1,6 @@
 import Link from '@/components/custom/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import pages from '@/pages/__pages.config'
+import pages from '@/pages/pages.config'
 import breakpointSwitch, { useWindowWidth } from '@/utils/helpers/breakpoint-switch'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
