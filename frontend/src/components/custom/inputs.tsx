@@ -70,9 +70,9 @@ export function FormInput({ ...props }: InputProps): ReactNode {
 								{...field}
 							/>
 						</FormControl>
-                        {showHint && field.value && <p style={{fontSize: '0.6rem'}}>Double-Click to Toggle Visibility</p>}
 						{props.desc && <FormDescription>{props.desc}</FormDescription>}
-						<FormMessage />
+						<FormMessage className='text-xs' />
+						{showHint && field.value && <p style={{fontSize: '0.6rem'}}>Double-Click to Toggle Visibility</p>}
 					</FormItem>
 				)
 			}}

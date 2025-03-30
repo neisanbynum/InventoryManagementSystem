@@ -1,25 +1,34 @@
-import Link from "@/components/custom/link"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import pages from "@/pages/__pages.config"
-import { Outlet, useLocation, useNavigate } from "react-router"
+import Link from '@/components/custom/link'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import pages from '@/pages/__pages.config'
+import breakpointSwitch, { useWindowWidth } from '@/utils/helpers/breakpoint-switch'
+import { Outlet, useLocation, useNavigate } from 'react-router'
 
 export default function AuthenticationLayout(): React.ReactNode {
 	const { pathname } = useLocation()
+	const width = useWindowWidth()
 
-    return (
-        <div className="vstack">
-            <Card style={{ width: pathname === pages.signin ? '30rem' : '35rem' }}>
-                <Header pathname={pathname} />
-                <CardContent>
-                    <Outlet />
-                </CardContent>
-                <Footer pathname={pathname} />
-            </Card>
-        </div>
-    )
+	return (
+		<div className='vstack'>
+			<Card
+				style={{
+					width:
+						pathname === pages.signin
+							? breakpointSwitch({ width, browser: '30rem', tablet: '30rem', mobile: '100%' })
+							: breakpointSwitch({ width, browser: '35rem', tablet: '35rem', mobile: '100%' })
+				}}
+			>
+				<Header pathname={pathname} />
+				<CardContent>
+					<Outlet />
+				</CardContent>
+				<Footer pathname={pathname} />
+			</Card>
+		</div>
+	)
 }
 
-function Header({ pathname }: { pathname: string}): React.ReactNode {
+function Header({ pathname }: { pathname: string }): React.ReactNode {
 	return (
 		<CardHeader>
 			<CardTitle>{pathname === pages.signin ? 'Authentication' : 'Registration'}</CardTitle>
@@ -31,12 +40,12 @@ function Header({ pathname }: { pathname: string}): React.ReactNode {
 	)
 }
 
-function Footer({ pathname }: { pathname: string}): React.ReactNode {
+function Footer({ pathname }: { pathname: string }): React.ReactNode {
 	const navigate = useNavigate()
 
 	return (
 		<CardFooter>
-			<div className="hstack gap-1">
+			<div className='hstack gap-1'>
 				{pathname === pages.signin && <p>Need to create an account?</p>}
 				{pathname === pages.register && <p>Already have an account?</p>}
 				<Link

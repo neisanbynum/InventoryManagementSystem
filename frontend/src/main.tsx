@@ -10,7 +10,7 @@ import { Toaster } from './components/ui/sonner'
 import pages from './pages/__pages.config'
 import AuthLayout from './layouts/auth-layout'
 import AuthenticationLayout from './layouts/authentication-layout'
-import SignInForm from './pages/sign-in'
+import AuthenicationForm from './pages/sign-in'
 import RegisterForm from './pages/register'
 
 createRoot(document.getElementById('root')!).render(
@@ -21,7 +21,7 @@ createRoot(document.getElementById('root')!).render(
 					<Route element={<AppLayout />}>
 						<Route path={pages.home} element={<div>Home</div>} />
 						<Route path={pages.authenication} element={<AuthenticationLayout />}>
-							<Route path={pages.signin} element={<SignInForm />} />
+							<Route path={pages.signin} element={<AuthenicationForm />} />
 							<Route path={pages.register} element={<RegisterForm />} />
 						</Route>
 						<Route path={pages.verification} element={<RegistrationVerification />} />

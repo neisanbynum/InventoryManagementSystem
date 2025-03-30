@@ -1,19 +1,20 @@
-import Clickable from "@/components/clickable"
-import server from "@/utils/server"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { AxiosError } from "axios"
-import { ReactNode } from "react"
-import { FormProvider, useForm } from "react-hook-form"
-import { useNavigate } from "react-router"
-import { toast } from "sonner"
-import pages from "../__pages.config"
-import { FormContent } from "@/components/form-content"
-import { largeLayoutInputs } from "./register.config"
-import { RegisterUserForm, registerUserForm } from "./register.types"
-
+import Clickable from '@/components/clickable'
+import server from '@/utils/server'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AxiosError } from 'axios'
+import { ReactNode } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
+import { toast } from 'sonner'
+import pages from '../__pages.config'
+import { RegisterUserForm, registerUserForm } from './register.types'
+import breakpointSwitch, { useWindowWidth } from '@/utils/helpers/breakpoint-switch'
+import FormBuilder from '@/components/form-content'
+import { browserInputs, mobileInputs, registerInputs } from './register.config'
 
 export default function RegisterForm(): ReactNode {
 	const navigate = useNavigate()
+	const width = useWindowWidth()
 
 	const form = useForm<RegisterUserForm>({
 		resolver: zodResolver(registerUserForm),
@@ -41,7 +42,7 @@ export default function RegisterForm(): ReactNode {
 				description: 'Your account has successfully been created. Await verification from a team admin.'
 			})
 			navigate(pages.signin)
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			if (error instanceof AxiosError) {
 				console.log(error.response?.data.detail)
@@ -54,17 +55,10 @@ export default function RegisterForm(): ReactNode {
 
 	return (
 		<FormProvider {...form}>
-			<form
-				onSubmit={form.handleSubmit(onSubmit)}
-				style={{ width: '100%' }}
-			>
+			<form onSubmit={form.handleSubmit(onSubmit)} style={{ width: '100%' }}>
 				<div className='vstack gap-8'>
-					<FormContent content={largeLayoutInputs}/>
-					<Clickable
-						type='submit'
-						label='Register'
-						className='w-60'
-					/>
+					<FormBuilder inputMap={registerInputs} content={breakpointSwitch({ width, browser: browserInputs, mobile: mobileInputs})}/>
+					<Clickable type='submit' label='Register' className='w-60' />
 				</div>
 			</form>
 		</FormProvider>

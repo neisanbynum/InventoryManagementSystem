@@ -8,16 +8,16 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
 import pages from "../__pages.config"
-import { AuthForm, authForm } from "./sign-in.types"
-import { FormContent } from "@/components/form-content"
-import { inputs } from "./sign-in.config"
+import { SignInForm, signInForm } from "./sign-in.types"
+import FormBuilder from "@/components/form-content"
+import { browserInputs, signInInputs } from "./sign-in.config"
 
-export default function SignInForm(): React.ReactNode {
+export default function AuthenicationForm(): React.ReactNode {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
-	const form = useForm<AuthForm>({
-		resolver: zodResolver(authForm),
+	const form = useForm<SignInForm>({
+		resolver: zodResolver(signInForm),
 		defaultValues: {
 			userID: '',
 			password: ''
@@ -26,7 +26,7 @@ export default function SignInForm(): React.ReactNode {
 		reValidateMode: 'onBlur'
 	})
 
-	async function onSubmit(entries: AuthForm) {
+	async function onSubmit(entries: SignInForm) {
 		try {
 			const { data } = await server.post('/auth', entries)
 			console.log(data)
@@ -53,7 +53,7 @@ export default function SignInForm(): React.ReactNode {
 				className='w-full'
 			>
 				<div className='vstack gap-8'>
-					<FormContent content={inputs} />
+					<FormBuilder content={browserInputs} inputMap={signInInputs} />
 					<Clickable
 						type='submit'
 						label='Authenticate'
