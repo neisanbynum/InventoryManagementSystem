@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { isBrowser, isMobileOnly, isTablet } from 'react-device-detect'
 
 export interface BreakpointSwitchArgs<T> {
-	browser?: T
-	tablet?: T
-	mobile?: T
+	b?: T
+	t?: T
+	m?: T
 	width?: number
 	debug?: boolean
 }
@@ -28,13 +28,7 @@ export function useWindowWidth(): number | undefined {
 	return width
 }
 
-export default function breakpointSwitch<T>({
-	browser,
-	tablet,
-	mobile,
-	width,
-	debug
-}: BreakpointSwitchArgs<T>): T | undefined {
+export default function breakpointSwitch<T>({ b, t, m, width, debug }: BreakpointSwitchArgs<T>): T | undefined {
 	const windowWidth = width ?? (typeof window !== 'undefined' ? window.innerWidth : undefined)
 
 	const widthIsMobile = windowWidth !== undefined && windowWidth < remToPx(35)
@@ -54,15 +48,15 @@ export default function breakpointSwitch<T>({
 	}
 
 	// Prefer responsive width logic when available
-	if (widthIsBrowser) return browser ?? tablet ?? mobile
-	if (widthIsTablet) return tablet ?? browser ?? mobile
-	if (widthIsMobile) return mobile ?? tablet ?? browser
+	if (widthIsBrowser) return b ?? t ?? m
+	if (widthIsTablet) return t ?? b ?? m
+	if (widthIsMobile) return m ?? t ?? b
 
 	// Fall back to react-device-detect
-	if (isBrowser && browser) return browser
-	if (isTablet && tablet) return tablet
-	if (isMobileOnly && mobile) return mobile
+	if (isBrowser && b) return b
+	if (isTablet && t) return t
+	if (isMobileOnly && m) return m
 
 	// Final fallback
-	return browser ?? tablet ?? mobile
+	return b ?? t ?? m
 }

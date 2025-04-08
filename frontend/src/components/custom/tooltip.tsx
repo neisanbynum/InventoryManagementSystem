@@ -1,4 +1,4 @@
-import getScrollParents from '@/utils/helpers/getScrollParents';
+import getScrollParents from '@/utils/helpers/getScrollParents'
 import clamp from '@/utils/helpers/number-clamp'
 import { cn } from '@sglara/cn'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
@@ -79,23 +79,19 @@ export function ToolTip({
 
 		const scrollParents = getScrollParents(triggerRef.current)
 
-        scrollParents.forEach(parent =>
-            parent.addEventListener('scroll', calculate, { passive: true })
-        )
-        window.addEventListener('scroll', calculate, { passive: true })
-        window.addEventListener('resize', calculate)
+		scrollParents.forEach((parent) => parent.addEventListener('scroll', calculate, { passive: true }))
+		window.addEventListener('scroll', calculate, { passive: true })
+		window.addEventListener('resize', calculate)
 
-        const observer = new ResizeObserver(calculate)
-        observer.observe(contentRef.current)
+		const observer = new ResizeObserver(calculate)
+		observer.observe(contentRef.current)
 
-        return () => {
-            scrollParents.forEach(parent =>
-                parent.removeEventListener('scroll', calculate)
-            )
-            window.removeEventListener('scroll', calculate)
-            window.removeEventListener('resize', calculate)
-            observer.disconnect()
-        }
+		return () => {
+			scrollParents.forEach((parent) => parent.removeEventListener('scroll', calculate))
+			window.removeEventListener('scroll', calculate)
+			window.removeEventListener('resize', calculate)
+			observer.disconnect()
+		}
 	}, [gap, padding, placement, visible])
 
 	return (
@@ -134,12 +130,7 @@ export function ToolTipTrigger({ children }: ParentProps): React.ReactNode {
 	}
 
 	return (
-		<div
-			ref={triggerRef}
-			onMouseEnter={showToolTip}
-			onMouseLeave={hideToolTip}
-			onClick={hideToolTip}
-		>
+		<div ref={triggerRef} onMouseEnter={showToolTip} onMouseLeave={hideToolTip} onClick={hideToolTip}>
 			{children}
 		</div>
 	)
@@ -171,7 +162,7 @@ interface PositionInput {
 	body: DOMRect
 	placement: Placement
 	gap?: number
-    padding?: number
+	padding?: number
 }
 
 function getPosition({ trigger, content, body, placement, gap = 8, padding = 8 }: PositionInput): Position {

@@ -9,13 +9,13 @@ export default function ThemeToggle(): React.ReactNode {
 	const { currTheme } = useSelector((state: RootState) => state.app)
     
     return (
-        <ToolTip delay={500}>
-            <ToolTipTrigger>
+        // <ToolTip delay={500}>
+        //     <ToolTipTrigger>
                 <Toggle currTheme={currTheme}/>
-            </ToolTipTrigger>
-            <ToolTipContent>
-                {`${titlecase(currTheme === 'dark' ? 'light' : 'dark')} Theme`}
-            </ToolTipContent>
-        </ToolTip>
+        //     </ToolTipTrigger>
+        //     <ToolTipContent>
+        //         {`${titlecase(currTheme === 'dark' ? 'light' : 'dark')} Theme`}
+        //     </ToolTipContent>
+        // </ToolTip>
     )
 }

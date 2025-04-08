@@ -1,25 +1,11 @@
-export type AllowedInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url'
-export interface Input {
-	name: string
-	label: string
-	type?: AllowedInputType
-	width?: React.CSSProperties['width']
-	placeholder?: string
-	passwordHint?: boolean
-}
-export interface InputDefinition {
-	name: string
-	label: string
-	type?: AllowedInputType
-	width?: React.CSSProperties['width']
-	placeholder?: string
-	passwordHint?: boolean
-}
+import { FormInputProps } from "../form-input/form-input.types"
+
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type InputSchemaDefinition<T extends Record<string, any>> = {
-	[K in keyof T]: InputDefinition & { name: K }
+	[K in keyof T]: FormInputProps & { name: K }
 }
-export type InputMap = Record<string, Input>
+export type InputMap = Record<string, FormInputProps>
 
 
 export type GroupStyle = { group: number; style: React.CSSProperties }
@@ -37,6 +23,6 @@ export type FormContent<T extends InputMap> = {
 		sub: number
 		row: number
 		components: (keyof T | React.ReactElement)[]
-		tweak?: { [key in keyof T]?: Partial<InputDefinition> }
+		tweak?: { [key in keyof T]?: Partial<FormInputProps> }
 	}[]
 }

@@ -1,17 +1,27 @@
-import { FormContent, InputDefinition, InputMap} from "./form-content.types"
-import React from "react"
-import { FormInput } from "../custom/inputs"
+import { FormContent, InputMap } from './form-content.types'
+import { FormInputProps } from '../form-input/form-input.types'
+import FormInput from '../form-input'
+import React from 'react'
 
 interface FormBuilderProps<T extends InputMap> {
 	inputMap: T
 	content?: FormContent<T>
 }
 
-export default function FormBuilder<T extends InputMap>({ inputMap, content }: FormBuilderProps<T>): React.ReactElement {
-	type Row = { group: number, sub: number, row: number, components: ((keyof T)| React.ReactElement)[], tweak?: { [key in keyof T]?: Partial<InputDefinition>} }
+export default function FormBuilder<T extends InputMap>({
+	inputMap,
+	content
+}: FormBuilderProps<T>): React.ReactElement {
+	type Row = {
+		group: number
+		sub: number
+		row: number
+		components: (keyof T | React.ReactElement)[]
+		tweak?: { [key in keyof T]?: Partial<FormInputProps> }
+	}
 	type Group = Row[]
-	type GroupStructure = { rows: Group, style?: React.CSSProperties }
-	type RowStructure = { row: Row, style?: React.CSSProperties }
+	type GroupStructure = { rows: Group; style?: React.CSSProperties }
+	type RowStructure = { row: Row; style?: React.CSSProperties }
 
 	function getGroups(): Record<number, GroupStructure> {
 		const grouped: Record<number, GroupStructure> = {}
@@ -19,7 +29,7 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 			if (!grouped[row.group]) grouped[row.group] = { rows: [] }
 			grouped[row.group].rows.push(row)
 		})
-		content?.groupStyles?.forEach(style => {
+		content?.groupStyles?.forEach((style) => {
 			if (grouped[style.group]) grouped[style.group].style = style.style
 		})
 		return grouped
@@ -27,7 +37,7 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 
 	function getSubGroups(group: Group): Record<number, GroupStructure> {
 		const grouped: Record<number, GroupStructure> = {}
-		group.forEach(row => {
+		group.forEach((row) => {
 			if (!grouped[row.sub]) grouped[row.sub] = { rows: [] }
 			grouped[row.sub].rows.push(row)
 			if (!grouped[row.sub].style) {
@@ -42,7 +52,7 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 
 	function getRows(sub: Group): Record<number, RowStructure> {
 		const grouped: Record<number, RowStructure> = {}
-		sub.forEach(row => {
+		sub.forEach((row) => {
 			grouped[row.row] = { row }
 			const style = content?.rowStyles?.find((style) => {
 				return style.row === row.row && style.sub === row.sub && style.group === row.group
@@ -52,10 +62,18 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 		return grouped
 	}
 
-	function RenderGroup({ groupKey, group, style }: { groupKey: string, group: Group, style?: React.CSSProperties }): React.ReactElement {
+	function RenderGroup({
+		groupKey,
+		group,
+		style
+	}: {
+		groupKey: string
+		group: Group
+		style?: React.CSSProperties
+	}): React.ReactElement {
 		const subgroups: [string, GroupStructure][] = Object.entries(getSubGroups(group))
 		return (
-			<div className="form-group gap-5" style={style}>
+			<div className='form-group gap-5' style={style}>
 				{subgroups.map(([sub, { rows, style }]) => {
 					const subKey = `${groupKey}-Sub${sub}`
 					return <RenderSubGroup key={subKey} subKey={subKey} subgroup={rows} style={style} />
@@ -64,10 +82,18 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 		)
 	}
 
-	function RenderSubGroup({ subKey, subgroup, style }: { subKey: string, subgroup: Group, style?: React.CSSProperties }): React.ReactElement {
+	function RenderSubGroup({
+		subKey,
+		subgroup,
+		style
+	}: {
+		subKey: string
+		subgroup: Group
+		style?: React.CSSProperties
+	}): React.ReactElement {
 		const rows: [string, RowStructure][] = Object.entries(getRows(subgroup))
 		return (
-			<div className="form-group" style={style}>
+			<div className='form-group' style={style}>
 				{rows.map(([ind, { row, style }]) => {
 					const rowKey = `${subKey}-Row${ind}`
 					return <RenderRow key={rowKey} rowKey={rowKey} row={row} style={style} />
@@ -76,7 +102,15 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 		)
 	}
 
-	function RenderRow({ rowKey, row, style }: { rowKey: string, row: Row, style?: React.CSSProperties }): React.ReactElement {
+	function RenderRow({
+		rowKey,
+		row,
+		style
+	}: {
+		rowKey: string
+		row: Row
+		style?: React.CSSProperties
+	}): React.ReactElement {
 		return (
 			<div className='form-row' style={style}>
 				{row.components.map((comp, i) => {
@@ -88,19 +122,9 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 						return null
 					}
 
-					const config: InputDefinition = { ...inputMap[comp], ...(row.tweak?.[comp] ?? {}) }
+					const config: FormInputProps = { ...inputMap[comp], ...(row.tweak?.[comp] ?? {}) }
 
-					return (
-						<FormInput
-							key={compKey}
-							name={config.name}
-							label={config.label}
-							type={config.type}
-							width={config.width}
-							placeholder={config.placeholder}
-							passwordHint={config.passwordHint}
-						/>
-					)
+					return <FormInput key={compKey} {...config} />
 				})}
 			</div>
 		)
@@ -111,7 +135,7 @@ export default function FormBuilder<T extends InputMap>({ inputMap, content }: F
 		<div className='form-content' style={{ gap: content?.gap }}>
 			{groups.map(([groupID, { rows, style }]) => {
 				const groupKey = `${content?.name}-Group${groupID}`
-				return <RenderGroup key={groupKey} groupKey={groupKey} group={rows} style={style}/>
+				return <RenderGroup key={groupKey} groupKey={groupKey} group={rows} style={style} />
 			})}
 		</div>
 	)

@@ -146,6 +146,15 @@
 		@apply text-5xl font-bold;
 	}
 
+	/* table {
+		table-layout: fixed;
+		width: 100%;
+	}
+	th, td {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	} */
+
 	/* Hide spin button in Chrome, Safari, etc. */
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
@@ -159,6 +168,65 @@
 }
 
 @layer components {
+	/* App Container */
+	.app-container {
+		@apply relative flex flex-col w-screen h-screen max-w-screen max-h-screen overflow-hidden;
+	}
+
+	/* Topbar */
+	.topbar {
+		@apply fixed top-0 left-0 flex w-full h-12 p-2 justify-between bg-slate-50 dark:bg-black;
+	}
+
+	/* Page */
+	.page-container {
+		@apply overflow-x-hidden overflow-y-auto;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.page-container::-webkit-scrollbar {
+		display: none;
+	}
+
+	.hidden-scroll {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.hidden-scroll::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* ScrollArea */
+	.scroll-static {
+		@apply relative flex grow justify-center items-center;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	
+	.scroll-static::-webkit-scrollbar {
+		display: none;
+	}
+
+    .scroll-container {
+        @apply grow h-full;
+    }
+
+	.scroll-bar-hor, .scroll-bar-vert {
+		@apply fixed z-40 flex justify-start bg-slate-200 dark:bg-slate-500 opacity-25 pointer-events-none;
+	}
+
+	.scroll-bar-hor {
+		@apply h-fit w-full;
+	}
+
+    .scroll-bar-vert {
+        @apply flex-col w-fit h-full;
+    }
+
+    .scroll-thumb {
+        @apply relative z-50 rounded-full bg-slate-500 dark:bg-slate-700 transition-all duration-0 ease-in-out hover:w-3 hover:opacity-70;
+    }
+
 	/* Stack Containers */
 	.hstack, .vstack, .form-row, .form-group, .form-content {
 		@apply flex w-full justify-center;
@@ -234,5 +302,25 @@
 	
 	.tooltip-visible {
 		@apply opacity-100 scale-100 pointer-events-auto;
+	}
+
+	.test-page {
+		display: grid;
+		min-width: 100vw;
+		width: 100vw;
+		min-height: 100vh;
+		height: 100vh;
+		grid-template-rows: 3rem calc(100vh - 3rem);
+		grid-template-columns: 100vw;
+	}
+	
+	.very-top {
+		grid-row: 1 / 2;
+		grid-column: 1;
+	}
+	
+	.below-content {
+		grid-row: 2 / 3;
+		grid-column: 1 / 2;
 	}
 }

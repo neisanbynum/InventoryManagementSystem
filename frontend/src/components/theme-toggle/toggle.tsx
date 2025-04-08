@@ -12,6 +12,7 @@ export default function Toggle( { currTheme }: { currTheme: Theme } ) {
 
     useEffect(() => {
         const theme = initialized ? currTheme : savedTheme ? savedTheme : currTheme
+        console.log(`changed theme to ${theme}...`)
         const root = window.document.documentElement
 		root.classList.remove('light', 'dark')
 		root.classList.add(theme)
