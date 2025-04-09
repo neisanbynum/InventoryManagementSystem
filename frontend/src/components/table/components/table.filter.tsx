@@ -13,8 +13,8 @@ export default function TableFilter({
 	if (!show) return null
 
 	return (
-		<div ref={ref} className={cn('flex flex-col h-fit items-start gap-1', className)}>
-			<Label>Filter</Label>
+		<div ref={ref} className={cn('flex h-fit items-center gap-2', className)}>
+			<Label className='text-md'>Filter:</Label>
 			<Input
 				type='text'
 				id='filter'

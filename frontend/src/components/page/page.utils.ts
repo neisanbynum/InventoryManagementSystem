@@ -9,7 +9,7 @@ export function usePageContext(): PageProviderValues {
     return context
 }
 
-export function useRefUpdates<T extends HTMLElement>() {
+export function useRefUpdates<T extends HTMLElement>(ref?: React.RefObject<T | null>) {
 	const [rect, setRect] = useState<DOMRect | null>(null)
 	const [scrollTop, setScrollTop] = useState<number>(-1)
 	const [clientHeight, setClientHeight] = useState<number>(-1)
@@ -17,10 +17,10 @@ export function useRefUpdates<T extends HTMLElement>() {
     const [hovering, setHovering] = useState<boolean>(false)
     const [scrolling, setScrolling] = useState<boolean>(false)
 
-    const ref = useRef<T | null>(null)
+    const defaultRef = useRef<T | null>(null)
 
     useLayoutEffect(() => {
-        const node = ref.current
+        const node = ref ? ref.current : defaultRef.current
         if (!node) return
 
         let scrollTimeout: ReturnType<typeof setTimeout> | null = null
@@ -70,5 +70,5 @@ export function useRefUpdates<T extends HTMLElement>() {
         }
     }, [])
 
-	return [ref, rect, scrollTop, clientHeight, scrollHeight, hovering, scrolling] as const
+	return [rect, scrollTop, clientHeight, scrollHeight, hovering, scrolling, ref || defaultRef] as const
 }

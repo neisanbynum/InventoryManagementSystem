@@ -8,6 +8,10 @@ export default class pages {
     
     static readonly test = '/test'
 
+    // Worker Pages
+    static readonly worker = '/worker'
+    static readonly workerDashboard = `${this.worker}/dashboard`
+
     // Auth Pages
     static readonly authenticated = '/auth'
     static readonly authTest = `${this.authenticated}/test`

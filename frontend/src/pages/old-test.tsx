@@ -1,5 +1,5 @@
 // import PageWrapper from '@/components/page-wrapper'
-import OrderCustomerSearch from './workers/order-customer-search'
+import OrderCustomerSearch from './workers/components/order-customer-search'
 import DataTable from '@/components/table'
 import { TestUserColumns, TestUserData } from './workers/existing-order.config'
 import TopbarMenu from '@/components/page-wrapper/topbar-menu'

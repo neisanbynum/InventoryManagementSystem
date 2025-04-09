@@ -11,6 +11,7 @@ import SignInOutlet from './pages/authentication/signin'
 import RegisterOutlet from './pages/authentication/register'
 import TestPage from './pages/test'
 import Page from './components/page'
+import WorkerDashboardPage from './pages/worker'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
 						<Route path={pages.signin} element={<SignInOutlet />} />
 						<Route path={pages.register} element={<RegisterOutlet />} />
 					</Route>
+					<Route path={pages.workerDashboard} element={<WorkerDashboardPage/>}/>
 					<Route path={pages.test} element={<TestPage />} />
 					{/* <Route path={pages.authenticated} element={<AuthLayout />}>
 						<Route path={pages.authTest} element={<div>Testing Auth Home</div>} />

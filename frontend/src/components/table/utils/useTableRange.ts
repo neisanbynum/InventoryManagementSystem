@@ -1,22 +1,44 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from 'react'
-import { useTableRangeInit, useTableRangeValues } from '../table.types'
 
+export interface useTableRangeInit<T extends Record<string, any>> {
+	data: T[]
+	rowQty?: number
+}
 
+export interface useTableRangeValues<T extends Record<string, any>> {
+	page: T[]
+	ranges: { start: number; end: number }[]
+    currRange: number
+	rowsPerPage: number
+	rowsPerPageOptions: [number, number, number, number, number]
+	start: boolean
+	end: boolean
+	firstPage: () => void
+	prevPage: () => void
+	nextPage: () => void
+	lastPage: () => void
+	setUsedData: React.Dispatch<React.SetStateAction<T[]>>
+	setRowsPerPage: React.Dispatch<React.SetStateAction<number>>
+}
+
+export type RowsPerPageOptions = [number, number, number, number, number]
+export type PageRange = { start: number; end: number }
+export type PageRanges = PageRange[]
 
 export default function useTableRange<T extends Record<string, any>>({
 	data,
-	rowQty
+	rowQty = 10
 }: useTableRangeInit<T>): useTableRangeValues<T> {
 	const [usedData, setUsedData] = useState<T[]>(data)
 	const [rowsPerPage, setRowsPerPage] = useState<number>(rowQty)
-	const rowsPerPageOptions: [number, number, number, number, number] = useMemo(() => {
+	const rowsPerPageOptions: RowsPerPageOptions = useMemo(() => {
 		return [rowQty, rowQty * 2, rowQty * 3, rowQty * 4, rowQty * 5]
 	}, [rowQty])
 
 	const length = usedData.length
-	const ranges: { start: number; end: number }[] = useMemo(() => {
-		const rangeList: { start: number; end: number }[] = []
+	const ranges: PageRanges = useMemo(() => {
+		const rangeList: PageRanges = []
 		for (let i = 0; i < length; i += rowsPerPage) {
 			rangeList.push({ start: i, end: Math.min(i + rowsPerPage, length) })
 		}

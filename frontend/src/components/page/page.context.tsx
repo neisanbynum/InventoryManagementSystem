@@ -2,19 +2,19 @@ import { useLayoutEffect, useState } from 'react'
 import { PageContext, useRefUpdates } from './page.utils'
 import { PageProviderProps } from './page.types'
 
-export default function PageProvider({ children }: PageProviderProps): React.ReactElement {
-	const scrollBarPadding: React.CSSProperties['padding'] = 3
-	const scrollBarWidth: React.CSSProperties['width'] = 12
+export default function PageProvider({ children, ref }: PageProviderProps): React.ReactElement {
+	const scrollBarPadding: React.CSSProperties['padding'] = 4
+	const scrollBarWidth: React.CSSProperties['width'] = 16
 
 	const [scrollBarStyle, setScrollBarStyle] = useState<React.CSSProperties | undefined>(undefined)
 	const [scrollThumbStyle, setScrollThumbStyle] = useState<React.CSSProperties | undefined>(undefined)
 	const [renderScrollBar, setRenderScrollBar] = useState<boolean>(false)
 
-	const [ref, rect, scrollTop, clientHeight, scrollHeight, hovering, scrolling] = useRefUpdates<HTMLDivElement>()
+	const [rect, scrollTop, clientHeight, scrollHeight, hovering, scrolling, defaultRef] = useRefUpdates<HTMLDivElement>(ref)
 
 	useLayoutEffect(() => {
 		let frame: number
-		const node = ref.current
+		const node = defaultRef.current
 		if (!node || !rect) return
 
 		const renderScroll = () => {
@@ -29,8 +29,9 @@ export default function PageProvider({ children }: PageProviderProps): React.Rea
                 zIndex: 20,
 				height: clientHeight,
 				width: scrollBarWidth,
-				opacity: scrolling ? 0.5 : 0.15,
-				transition: 'all'
+				opacity: scrolling ? 0.25 : 0.1,
+				transition: 'all',
+				transitionDuration: '250ms'
 			})
 
 			const scrollPercent: number = scrollTop / hidden
@@ -68,7 +69,7 @@ export default function PageProvider({ children }: PageProviderProps): React.Rea
 	}, [clientHeight, hovering, scrolling, rect, scrollHeight, scrollTop])
 
 	return (
-		<PageContext.Provider value={{ scrollBarStyle, scrollThumbStyle, renderScrollBar, ref }}>
+		<PageContext.Provider value={{ scrollBarStyle, scrollThumbStyle, renderScrollBar, defaultRef }}>
 			{children}
 		</PageContext.Provider>
 	)

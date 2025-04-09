@@ -29,12 +29,12 @@ export default function TableHead<T extends Record<string, any>>({
 					gridTemplateColumns: generateGridTemplate(columns, minColWidth)
 				}}
 			>
-				{columns.map((col, i) => (
+				{columns?.map((col, i) => (
 					<div
 						key={i}
 						role={'columnheader'}
 						className={
-							'flex size-full justify-between items-center text-sm font-semibold px-2 py-1 border bg-slate-100 dark:bg-slate-950'
+							'flex size-full justify-between items-center text-xs font-semibold px-2 py-1 border bg-slate-100 dark:bg-slate-950'
 						}
 						style={{ gridRow: 1, gridColumn: i + 1 }}
 						onClick={() =>{

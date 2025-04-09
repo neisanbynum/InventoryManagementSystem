@@ -38,7 +38,7 @@ export default function TableBody<T extends Record<string, any>>({
 						gridTemplateColumns: generateGridTemplate(columns, minColWidth)
 					}}
 				>
-					{columns.map((col, ci) => {
+					{columns?.map((col, ci) => {
 						const cellValue = col.value ? col.value(row) : row[col.accessorKey]
 						const renderedCell = col.renderCell ? col.renderCell(cellValue, row) : cellValue
 						return (

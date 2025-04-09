@@ -20,6 +20,7 @@ export default function useComputedDimensions<T extends HTMLElement>(): Computed
 			setHeight(0)
 			return
 		}
+
 		const update = () => {
 			const rect = node.getBoundingClientRect()
 			const style = window.getComputedStyle(node)
@@ -27,8 +28,11 @@ export default function useComputedDimensions<T extends HTMLElement>(): Computed
 			const marginY = convertMeasurement(style.marginTop) + convertMeasurement(style.marginBottom)
 			const marginX = convertMeasurement(style.marginLeft) + convertMeasurement(style.marginRight)
 
-			setHeight(rect.height + marginY)
-			setWidth(rect.width + marginX)
+			const newHeight = rect.height + marginY
+			const newWidth = rect.width + marginX
+
+			if (newHeight !== height) setHeight(newHeight)
+			if (newWidth !== width) setWidth(newWidth)
 		}
 
 		update()

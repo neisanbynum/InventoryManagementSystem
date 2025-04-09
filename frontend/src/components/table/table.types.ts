@@ -13,7 +13,7 @@ export type Columns<T extends Record<string, any>> = ColumnDef<T>[]
 
 export interface DataTableProps<T extends Record<string, any>> {
 	className?: React.HTMLAttributes<HTMLDivElement>['className']
-	columns: Columns<T>
+	columns?: Columns<T>
 	data: T[]
 	displayedRows?: number
 	rowHeight?: React.CSSProperties['height']
@@ -43,7 +43,7 @@ export interface useDataValues<T extends Record<string, any>> {
 
 export interface useTableRangeInit<T extends Record<string, any>> {
 	data: T[]
-	rowQty: number
+	rowQty?: number
 }
 
 export interface useTableRangeValues<T extends Record<string, any>> {
@@ -63,7 +63,7 @@ export interface useTableRangeValues<T extends Record<string, any>> {
 }
 
 export interface TableBodyProps<T extends Record<string, any>> {
-	columns: Columns<T>
+	columns?: Columns<T>
 	page: T[]
 	rowHeight?: React.CSSProperties['height']
 	minColWidth?: React.CSSProperties['width']
@@ -79,7 +79,7 @@ export interface TableFilterProps {
 }
 
 export interface TableHeadProps<T extends Record<string, any>> {
-	columns: Columns<T>
+	columns?: Columns<T>
 	width?: React.CSSProperties['width']
 	minColWidth?: React.CSSProperties['width']
 	computedData: useDataValues<T>

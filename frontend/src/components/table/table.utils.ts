@@ -4,10 +4,10 @@ import useTableRange from './utils/useTableRange'
 import { Columns, useDataValues } from './table.types'
 
 export function generateGridTemplate<T extends Record<string, any>>(
-	columns: Columns<T>,
+	columns?: Columns<T>,
 	minColWidth?: React.CSSProperties['width']
-): string {
-	return columns.map((col) => `minmax(${minColWidth || '100px'}, ${col.width ?? 1}fr)`).join(' ')
+): string | undefined {
+	return columns?.map((col) => `minmax(${minColWidth || '100px'}, ${col.width ?? 1}fr)`).join(' ')
 }
 
 export function useData<T extends Record<string, any>>(data: T[], displayQty: number): useDataValues<T> {
